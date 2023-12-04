@@ -18,7 +18,6 @@ const basicEndPoints = [
 const markupContainer = document.querySelector('.json-container');
 
 function fetchData(url) {
-  console.log(fetch(`${url}${basicEndPoints[5]}`));
   return fetch(`${url}${basicEndPoints[5]}`).then(response => {
     if (!response.ok) {
       throw new Error(response.statusText);
@@ -43,7 +42,6 @@ function markupUsers(arr) {
 
 fetchData(BASE_URL)
   .then(json => {
-    console.log(json);
     markupContainer.innerHTML = markupUsers(json);
   })
   .catch(error => console.log(error));
