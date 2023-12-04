@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <div>
+    <div class="is-hidden">
       <ul class="json-container"></ul>
     </div>
 
@@ -16,6 +16,14 @@
       <p class="loader">Loading data, please wait...</p>
       <p class="error">Oops! Something went wrong! Try reloading the page!</p>
       <div class="cat-info"></div>
+    </div>
+
+    <div>
+      <form action="submit" class="js-form-weather">
+        <input type="text" class="js-city-input" name="city" />
+        <button>Click to get weather</button>
+      </form>
+      <ul class="weather-container"></ul>
     </div>
 
     <script src="index.js" type="module"></script>
