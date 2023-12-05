@@ -20,6 +20,7 @@ function handleWeatherInCity(e) {
   fetchWeather(city.value)
     .then(arr => (weatherContainer.innerHTML = makeMarkup(arr)))
     .catch(error => console.error(error));
+  city.value = '';
 }
 
 function fetchWeather(query) {

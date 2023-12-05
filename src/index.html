@@ -4,6 +4,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Homework 10</title>
+    <link
+      href="https://unpkg.com/slim-select@latest/dist/slimselect.css"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
@@ -11,14 +15,19 @@
       <ul class="json-container"></ul>
     </div>
 
-    <div class="breed-container is-hidden">
+    <div class="breed-container">
       <select class="breed-select"></select>
-      <p class="loader">Loading data, please wait...</p>
-      <p class="error">Oops! Something went wrong! Try reloading the page!</p>
+      <div class="loader-container">
+        <p class="loader-text">Loading data, please wait...</p>
+        <span class="loader"></span>
+      </div>
+      <div class="error-container">
+        <p class="error">Oops! Something went wrong! Try reloading the page!</p>
+      </div>
       <div class="cat-info"></div>
     </div>
 
-    <div class="">
+    <div class="is-hidden">
       <form action="submit" class="js-form-weather">
         <input type="text" class="js-city-input" name="city" />
         <button>Click to get weather</button>
