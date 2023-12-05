@@ -71,11 +71,16 @@ p {
   }
 }
 
-.breed-container,
 .loader-container {
   display: flex;
   flex-direction: column;
   gap: 20px;
   justify-content: center;
   align-items: center;
+}
+.breed-container {
+}
+
+.breed-select {
+  width: 30%;
 }
