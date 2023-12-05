@@ -11,6 +11,11 @@ function handleWeatherInCity(e) {
   e.preventDefault();
 
   const { city } = e.currentTarget.elements;
+  if (!city.value.trim()) {
+    city.value = '';
+    console.log('Enter city name!');
+    return;
+  }
 
   fetchWeather(city.value)
     .then(arr => (weatherContainer.innerHTML = makeMarkup(arr)))
@@ -42,7 +47,8 @@ function makeMarkup(obj) {
   return `<li>
           <p>Humidity: ${humidity}</p>
           <p>Pressure: ${pressure}</p>
-          <p>Sunrise: ${sunriseTime.getHours()}:${sunsetTime.getMinutes()} AM</p>
+          <p>Sunrise: ${sunriseTime.getHours()}:0${sunriseTime.getMinutes()} AM</p>
+          <p>Sunset: ${sunsetTime.getHours()}:${sunsetTime.getMinutes()} PM</p>
           <p>Description: ${description}</p>
           <p>Wind speed: ${speed}</p>
         </li>`;
