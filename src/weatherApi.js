@@ -36,14 +36,13 @@ function makeMarkup(obj) {
     wind: { speed },
   } = obj;
 
-  const sunriseTime = new Date(sunrise);
-  const sunsetTime = new Date(sunset);
+  const sunriseTime = new Date(sunrise * 1000);
+  const sunsetTime = new Date(sunset * 1000);
 
   return `<li>
           <p>Humidity: ${humidity}</p>
           <p>Pressure: ${pressure}</p>
-          <p>Sunrise: ${sunriseTime.toLocaleTimeString()}</p>
-          <p>Sunset: ${sunsetTime.toLocaleTimeString()}</p>
+          <p>Sunrise: ${sunriseTime.getHours()}:${sunsetTime.getMinutes()} AM</p>
           <p>Description: ${description}</p>
           <p>Wind speed: ${speed}</p>
         </li>`;
