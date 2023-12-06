@@ -7,3 +7,9 @@ export function fetchBreeds(url) {
     return data;
   });
 }
+
+export function fetchCatByBreed(url) {
+  return axios(url).then(({ data }) => {
+    return data;
+  });
+}
