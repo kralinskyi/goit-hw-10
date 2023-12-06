@@ -77,10 +77,43 @@ p {
   gap: 20px;
   justify-content: center;
   align-items: center;
-}
-.breed-container {
+  margin-top: 20px;
 }
 
 .breed-select {
   width: 30%;
+}
+
+.error-container {
+  text-align: center;
+  margin-top: 20px;
+}
+
+/* Стилі для основного select */
+.breed-select {
+  font-family: Arial, sans-serif;
+  font-size: 18px;
+  padding: 8px;
+  border: 2px solid yellowgreen;
+  border-radius: 4px;
+  cursor: pointer;
+  background-color: #dfe2ab;
+}
+
+/* Стилі для опцій */
+.option-item {
+  /* Загальні властивості */
+  font-size: 16px;
+  padding: 6px;
+  cursor: pointer;
+}
+
+/* Наприклад, стилізація при наведенні на опцію */
+.option-item:hover {
+  background-color: #dfe2ab;
+  cursor: pointer;
+}
+
+.is-shown {
+  display: none;
 }
