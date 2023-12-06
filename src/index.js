@@ -11,36 +11,42 @@ refs.loader.classList.add('hidden');
 refs.catInfo.classList.add('hidden');
 refs.error.classList.add('hidden');
 
-fetchBreeds('https://api.thecatapi.com/v1/breeds')
-  .then(data => {
-    let storedBreeds = [];
-    storedBreeds = data;
+(function onLoadPage() {
+  return fetchBreeds('https://api.thecatapi.com/v1/breeds')
+    .then(data => {
+      let storedBreeds = [];
+      storedBreeds = data;
 
-    for (let i = 0; i < storedBreeds.length; i += 1) {
-      const breed = storedBreeds[i];
-      let option = document.createElement('option');
+      for (let i = 0; i < storedBreeds.length; i += 1) {
+        const breed = storedBreeds[i];
+        let option = document.createElement('option');
 
-      const { image, id, name } = breed;
+        const { image, id, name } = breed;
 
-      if (!image) continue;
+        if (!image) continue;
 
-      option.classList.add('option-item');
-      option.value = `${id}`;
-      option.innerHTML = `${name}`;
-      refs.selectEl.appendChild(option);
-    }
+        option.classList.add('option-item');
+        option.value = `${id}`;
+        option.innerHTML = `${name}`;
+        refs.selectEl.appendChild(option);
+      }
 
-    refs.loader.classList.add('hidden');
-    refs.selectEl.classList.remove('hidden');
-  })
-  .catch(function (error) {
-    refs.error.classList.remove('hidden');
-    Notify.failure(
-      `Oops! Something went wrong! Try reloading the page! ${error}`
-    );
-  });
+      refs.loader.classList.add('hidden');
+      refs.selectEl.classList.remove('hidden');
+    })
+    .catch(function (error) {
+      refs.selectEl.classList.add('hidden');
 
-refs.selectEl.addEventListener('change', event => {
+      refs.error.classList.remove('hidden');
+      refs.error.textContent =
+        'Oops! Something went wrong! Try reloading the page';
+      Notify.failure(
+        `Oops! Something went wrong! Try reloading the page! ${error}`
+      );
+    });
+})();
+
+function changeSelectedOption(event) {
   event.preventDefault();
 
   refs.loader.classList.remove('hidden');
@@ -50,9 +56,6 @@ refs.selectEl.addEventListener('change', event => {
 
   const id = event.target.value;
   fetchCatByBreed(`https://api.thecatapi.com/v1/images/search?breed_ids=${id}`)
-    .then(cat => {
-      return cat;
-    })
     .then(cat => {
       const { url, breeds } = cat[0];
       const { description, temperament, wikipedia_url, name } = breeds[0];
@@ -64,8 +67,7 @@ refs.selectEl.addEventListener('change', event => {
         markup({
           url,
           description,
-          description,
-          description,
+          temperament,
           wikipedia_url,
           name,
         })
@@ -77,13 +79,15 @@ refs.selectEl.addEventListener('change', event => {
     .catch(function (error) {
       refs.loader.classList.add('hidden');
       Notify.failure(
-        `Oops! Something went wrong! Try reloading the page! ${error}`
+        `Oops! Something went wrong! Try reloading the page! ${error.statusText}`
       );
       refs.error.classList.remove('hidden');
       refs.error.textContent =
         'Oops! Something went wrong! Try reloading the page';
     });
-});
+}
+
+refs.selectEl.addEventListener('change', changeSelectedOption);
 
 function markup({ ...params }) {
   return `<img id="breed_image" load="lazy" width="600" src="${params.url}" />
@@ -93,7 +97,7 @@ function markup({ ...params }) {
     </div>
     <div>
       <h2>Temperament</h2>
-      <p class="cat-temperament">${params.description}</p>
+      <p class="cat-temperament">${params.temperament}</p>
       <h2>About</h2>
       <a href="${params.wikipedia_url}">${params.name}</a>
     </div>`;
