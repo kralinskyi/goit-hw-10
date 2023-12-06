@@ -38,6 +38,8 @@ fetchBreeds('https://api.thecatapi.com/v1/breeds')
     selectEl.classList.remove('hidden');
   })
   .catch(function (error) {
+    error.classList.remove('hidden');
+
     Notify.failure(
       `Oops! Something went wrong! Try reloading the page! ${error}`
     );
@@ -47,15 +49,14 @@ selectEl.addEventListener('change', event => {
   event.preventDefault();
   loader.classList.remove('hidden');
   const id = event.target.value;
+  catInfo.innerHTML = '';
+  catInfo.classList.add('hidden');
 
   fetchCatByBreed(`https://api.thecatapi.com/v1/images/search?breed_ids=${id}`)
     .then(cat => {
-      catInfo.classList.add('hidden');
       return cat;
     })
     .then(cat => {
-      catInfo.innerHTML = '';
-
       const { url, breeds } = cat[0];
       const { description, temperament, wikipedia_url, name } = breeds[0];
 
@@ -82,9 +83,11 @@ selectEl.addEventListener('change', event => {
     })
     .catch(function (error) {
       loader.classList.add('hidden');
-      error.textContent = 'Oops! Something went wrong! Try reloading the page';
       Notify.failure(
         `Oops! Something went wrong! Try reloading the page! ${error}`
       );
+      error.classList.remove('hidden');
+
+      error.textContent = 'Oops! Something went wrong! Try reloading the page';
     });
 });
