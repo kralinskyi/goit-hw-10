@@ -51,6 +51,7 @@ selectEl.addEventListener('change', event => {
   const id = event.target.value;
   catInfo.innerHTML = '';
   catInfo.classList.add('hidden');
+  selectEl.classList.add('hidden');
 
   fetchCatByBreed(`https://api.thecatapi.com/v1/images/search?breed_ids=${id}`)
     .then(cat => {
@@ -60,26 +61,25 @@ selectEl.addEventListener('change', event => {
       const { url, breeds } = cat[0];
       const { description, temperament, wikipedia_url, name } = breeds[0];
 
-      loader.classList.remove('hidden'); // Показуємо loader, ховаємо select
+      loader.classList.remove('hidden');
 
       catInfo.insertAdjacentHTML(
         'beforeend',
-        ` <img id="breed_image" load="lazy" width="600" src='${url}'/>
-         
-           <div>
-          <h2>Description</h2>
-          <p class="cat-description">${description}</p>
-        </div>
-        <div>
-          <h2>Temperament</h2>
-        <p class="cat-temperament">${temperament}</p>
-        <h2>About</h2>
-        <a href="${wikipedia_url}">${name}</a>        
-        </div>
-          `
+        `<img id="breed_image" load="lazy" width="600" src="${url}" />
+    <div>
+      <h2>Description</h2>
+      <p class="cat-description">${description}</p>
+    </div>
+    <div>
+      <h2>Temperament</h2>
+      <p class="cat-temperament">${temperament}</p>
+      <h2>About</h2>
+      <a href="${wikipedia_url}">${name}</a>
+    </div>`
       );
       loader.classList.add('hidden'); // Ховаємо loader після завершення запиту
       catInfo.classList.remove('hidden');
+      selectEl.classList.remove('hidden');
     })
     .catch(function (error) {
       loader.classList.add('hidden');
