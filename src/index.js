@@ -7,14 +7,16 @@ import { Notify } from 'notiflix';
 import { fetchBreeds, fetchCatByBreed } from './cat-api';
 
 const selectEl = document.querySelector('.breed-select');
+const loader = document.querySelector('.loader-container');
+const catInfo = document.querySelector('.cat-info');
+const error = document.querySelector('.error');
+
+loader.classList.add('hidden');
+catInfo.classList.add('hidden');
+error.classList.add('hidden');
 
 fetchBreeds('https://api.thecatapi.com/v1/breeds')
   .then(data => {
-    document.querySelector('.loader-container').innerHTML =
-      "<span class='loader'></span>";
-    setTimeout(() => {
-      document.querySelector('.loader-container').innerHTML = '';
-    }, 500);
     let storedBreeds = [];
     storedBreeds = data;
 
@@ -31,6 +33,9 @@ fetchBreeds('https://api.thecatapi.com/v1/breeds')
       option.innerHTML = `${name}`;
       selectEl.appendChild(option);
     }
+
+    loader.classList.add('hidden'); // Ховаємо loader після завершення запиту
+    selectEl.classList.remove('hidden');
   })
   .catch(function (error) {
     Notify.failure(
@@ -38,33 +43,25 @@ fetchBreeds('https://api.thecatapi.com/v1/breeds')
     );
   });
 
-/*
-
-Коли користувач обирає якусь опцію в селекті, необхідно виконувати запит за повною інформацією про кота на ресурс https://api.thecatapi.com/v1/images/search. Не забудь вказати в цьому запиті параметр рядка запиту breed_ids з ідентифікатором породи.
-
-Ось як буде виглядати URL-запит для отримання повної інформації про собаку за ідентифікатором породи:
-
-
-
-Напиши функцію fetchCatByBreed(breedId), яка очікує ідентифікатор породи, робить HTTP-запит і повертає проміс із даними про кота - результатом запиту. Винеси її у файл cat-api.js і зроби іменований експорт.
-
-Якщо запит був успішний, під селектом у блоці div.cat-info з'являється зображення і розгорнута інформація про кота: назва породи, опис і темперамент.
-
-*/
-
 selectEl.addEventListener('change', event => {
   event.preventDefault();
-
+  loader.classList.remove('hidden');
   const id = event.target.value;
 
   fetchCatByBreed(`https://api.thecatapi.com/v1/images/search?breed_ids=${id}`)
     .then(cat => {
+      catInfo.classList.add('hidden');
+      return cat;
+    })
+    .then(cat => {
+      catInfo.innerHTML = '';
+
       const { url, breeds } = cat[0];
       const { description, temperament, wikipedia_url, name } = breeds[0];
 
-      document.querySelector('.cat-info').innerHTML = '';
+      loader.classList.remove('hidden'); // Показуємо loader, ховаємо select
 
-      document.querySelector('.cat-info').insertAdjacentHTML(
+      catInfo.insertAdjacentHTML(
         'beforeend',
         ` <img id="breed_image" load="lazy" width="600" src='${url}'/>
          
@@ -80,10 +77,12 @@ selectEl.addEventListener('change', event => {
         </div>
           `
       );
+      loader.classList.add('hidden'); // Ховаємо loader після завершення запиту
+      catInfo.classList.remove('hidden');
     })
     .catch(function (error) {
-      document.querySelector('.error').textContent =
-        'Oops! Something went wrong! Try reloading the page';
+      loader.classList.add('hidden');
+      error.textContent = 'Oops! Something went wrong! Try reloading the page';
       Notify.failure(
         `Oops! Something went wrong! Try reloading the page! ${error}`
       );
